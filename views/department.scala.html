@@ -1,0 +1,49 @@
+@(deptList: List[models.Department], user: models.users.User)
+
+@main("Department", user) {
+
+    <p class="lead">Our Department</p>
+
+    @if(flash.containsKey("success")) {
+        <div class="alert alert-success">
+        @flash.get("success")
+        </div>
+    }
+
+    <table class="table table-bordered table-hover table-condensed">
+
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Department Name</th>
+            <th colspan="2"></th>      
+          </tr>
+        </thead>
+      
+        <tbody>
+          @for(d<-deptList) {
+            <tr>
+              <td class="numeric">@d.getDeptID</td>
+              <td>@d.getDepName</td>
+              <td>
+                <a href="@routes.HomeController.updateDepartment(d.getDeptID)" class="button-xs btn-danger">
+                  <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+              </td>  
+              <td>
+                <a href="@routes.HomeController.deleteDepartment(d.getDeptID)" class="button-xs btn-danger"  onclick="return confirmDel()">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      
+      </table>
+      <p>
+        <a href="@routes.HomeController.addDepartment()">
+          <button class="btn btn-primary">Add a Department</button>
+        </a>
+      </p>
+
+}

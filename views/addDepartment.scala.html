@@ -1,0 +1,21 @@
+@(departmentForm: Form[models.Department],user: models.users.User)
+@import helper._
+
+@main("Add Department",user) {
+    <p class="lead">Add a new department</p>
+    @form(action=routes.HomeController.addDepartmentSubmit(), 'class-> "form-horizontal", 'role -> "form") {
+        @CSRF.formField
+
+        @inputText(departmentForm("name"), '_label -> "Name", 'class -> "form_control")
+        @inputText(departmentForm("email"), '_label -> "E-mail", 'class -> "form_control")
+
+        @inputText(departmentForm("id"), '_label -> "", 'hidden -> "hidden")
+
+        <div class="actions">
+            <input type="submit" value="Add/Update Department" class="btn btn-primary">
+            <a href="@routes.HomeController.department">
+                <button type="button" class="btn btn-warning">Cancel</button>
+            </a>
+        </div>
+        }
+}

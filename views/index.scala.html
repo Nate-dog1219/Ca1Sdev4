@@ -1,0 +1,72 @@
+@(employees: List[models.Employee], projects: List[models.Project], user: models.users.User,env: play.api.Environment)
+
+@main("Employees",user) {
+
+<p class="lead">Employee</p>
+<br>
+<div class="row">
+  <div class="col-sm-2">
+    <h4>Project</h4>
+    <div class="list-group">
+      <a href="@routes.HomeController.index(0)" class="list-group-item">All Projects</a>
+      @for(p <- projects) {
+        <a href="@routes.HomeController.index(p.getId)" class="list-group-item">@p.getName
+          <span class="badge">@p.getEmployees.size()</span>
+        </a>
+      }
+    </div>
+  </div>
+  <div class="col-sm-10">
+    <table class="table table-bordered table-hover table-condensed">
+      @if(flash.containsKey("success")) {
+        <div class="alert alert-success">
+          @flash.get("success")
+        </div>
+      }
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Department Name</th>
+          <th colspan="2"></th>      
+        </tr>
+      </thead>
+
+      <tbody>
+        @for(e<-employees) {
+          <tr>
+              @if(env.resource("public/images/employeeImages/thumbnails/" + e.getId + ".jpg").isDefined) {
+                <td><img src="/assets/images/employeeImages/thumbnails/@(e.getId + ".jpg")"/></td>
+            } else {
+                <td><img src="/assets/images/employeeImages/thumbnails/noImage.jpg"/></td>
+            }
+            <td class="numeric">@e.getId</td>
+            <td><a href="@routes.HomeController.employeeDetails(e.getId)">
+              @e.getName</td>  
+            </a>      
+            <td class="String">@e.getDepartment.getDepName</td>
+            <td>
+              <a href="@routes.HomeController.updateEmployee(e.getId)" class="button xs btn-danger">
+                <span class="glyphicon glyphicon-pencil"></span>
+              </a>
+            </td> 
+                   <td>
+              <a href="@routes.HomeController.deleteEmployee(e.getId)" class="button xs btn-danger" onclick="return confirmDel();">
+                <span class="glyphicon glyphicon-trash"></span>
+              </a>
+            </td>
+          </tr>
+        }
+      </tbody>
+
+    </table>
+
+    <p>
+      <a href="@routes.HomeController.addEmployee()">
+        <button class="btn btn-primary">Add a employee</button>
+      </a>
+    </p>
+  </div>
+</div>
+}

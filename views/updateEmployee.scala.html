@@ -1,0 +1,37 @@
+@(id: Long, updateEmployeeForm: Form[models.Employee], user: models.users.User)
+
+@import helper._
+
+@main("Update employee", user) {
+    
+<p class="lead"> Update Employee</p>
+
+@form(action=routes.HomeController.updateEmployeeSubmit(id), 'class -> "form-horizontal", 
+'role -> "form",'enctype -> "multipart/form-data") {
+    @* CSRF attack prevention *@
+    @CSRF.formField
+    @inputText(updateEmployeeForm("name"), '_label -> "Name", 'class -> "form-control")
+    @inputText(updateEmployeeForm("address"), '_label -> "Address", 'class -> "form-control")
+
+    @for((value, name) <- Project.options) {
+        <input type="checkbox" name="proSelect[]" value="@value"
+        @if(Project.inProject(value.toLong, id)) {
+            checked
+        }
+        />@name<br>
+    }
+    
+    @inputText(updateEmployeeForm("department name"), '_label -> "Department", 'class -> "form-control")
+    
+    <label>Image </label>
+    <input class = "btn-sm btn-default" type="file" name="upload">
+    <br><br>
+
+    <div class="actions">
+        <input type="submit" value="Update Employee" class="btn btn-primary">
+        <a href="@routes.HomeController.index(0)">
+            <button type="button" class="btn btn-warning">Cancel</button>
+        </a>
+    </div>
+ }
+}
