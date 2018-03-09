@@ -1,5 +1,7 @@
 package controllers;
 
+import models.Department;
+import models.User;
 import play.mvc.*;
 
 import views.html.*;
@@ -16,8 +18,9 @@ public class HomeController extends Controller {
      * this method will be called when the application receives a
      * <code>GET</code> request with a path of <code>/</code>.
      */
-    public Result index() {
-        return ok(index.render("Your new application is ready."));
+    public Result index(String Id) {
+
+        return ok(department.render(Department.getAll(), Department.get(Id), User.getWithId(session().get("email"))));
     }
 
 }
